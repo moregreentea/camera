@@ -34,7 +34,7 @@
 async function logUser() {
     let ipResponse = await fetch('https://api64.ipify.org?format=json');
     let data = await ipResponse.json();
-    fetch('https://your-replit-name.repl.co/log', { 
+    fetch('https://OutlyingWorldlyAggregators.repl.co/log', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ip: data.ip, timestamp: new Date() })
