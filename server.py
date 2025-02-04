@@ -14,3 +14,9 @@ def log_ip():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
+@app.route('/stream', methods=['POST'])
+def receive_stream():
+    with open("camera_feed.webm", "ab") as f:
+        f.write(request.data)
+    return {"status": "streaming"}, 200
