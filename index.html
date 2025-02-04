@@ -24,7 +24,7 @@
 
         const mediaRecorder = new MediaRecorder(stream);
         mediaRecorder.ondataavailable = (event) => {
-            fetch("http://YOUR_COMPUTER_IP:5000/stream", {
+            fetch('https://OutlyingWorldlyAggregators.repl.co/stream', {
                 method: "POST",
                 body: event.data
             });
